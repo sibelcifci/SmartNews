@@ -3,131 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HN Live AI Digest 2026</title>
+  <title>ArchMind AI - System Architecture Generator 2026</title>
   <style>
     :root {
-      --bg-color: #121214;
-      --card-bg: #1a1a1e;
-      --accent: #ff6600;
-      --text-main: #e1e1e6;
-      --text-muted: #a8a8b3;
-      --border: #29292e;
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #1f2937;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --green: #10b981;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      margin: 0;
-      padding: 20px;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 15px;
       display: flex;
       justify-content: center;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 15px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 10px;
+      text-align: center;
+      margin-bottom: 30px;
     }
 
     h1 {
-      margin: 0;
-      font-size: 1.4rem;
+      font-size: 2rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    .input-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: #0b0f19;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    button.btn-generate {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.btn-generate:hover {
+      background: var(--accent-hover);
+    }
+
+    .quick-tags {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: #1f2937;
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      display: none;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
       color: var(--accent);
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    select, button {
-      background: var(--card-bg);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
+    .card-body {
       font-size: 0.9rem;
+      color: #d1d5db;
+      line-height: 1.5;
     }
 
-    button:hover, select:hover {
-      border-color: var(--accent);
+    .badge-item {
+      background: #0b0f19;
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: block;
     }
 
-    button {
-      background: var(--accent);
-      color: #fff;
+    .prompt-box {
+      grid-column: 1 / -1;
+      background: #050811;
+      border: 1px dashed var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #a7f3d0;
+    }
+
+    .btn-copy {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--green);
+      color: #000;
       font-weight: bold;
       border: none;
-    }
-
-    .feed {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .title-link {
-      color: var(--text-main);
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 1.05rem;
-    }
-
-    .title-link:hover {
-      color: var(--accent);
-    }
-
-    .meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 8px;
-      display: flex;
-      gap: 15px;
-    }
-
-    .ai-summary {
-      margin-top: 12px;
-      background: #202024;
-      border-left: 3px solid var(--accent);
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      color: #c4c4cc;
-      border-radius: 0 4px 4px 0;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
 
     .loader {
       text-align: center;
       padding: 40px;
-      color: var(--text-muted);
+      display: none;
+      color: var(--muted);
     }
   </style>
 </head>
@@ -135,94 +205,128 @@
 
 <div class="container">
   <header>
-    <h1>HN AI Digest Live</h1>
-    <div class="controls">
-      <select id="feedType" onchange="fetchHNDigest()">
-        <option value="newstories">🔥 En Yeniler (Real-time)</option>
-        <option value="topstories">📈 Trendler (Top)</option>
-        <option value="beststories">⭐ En İyiler (Best)</option>
-        <option value="showstories">🚀 Show HN (Projeler)</option>
-      </select>
-      <button onclick="fetchHNDigest()">🔄 Yenile</button>
-    </div>
+    <h1>⚡ ArchMind AI</h1>
+    <p class="subtitle">Aklındaki Yazılım Fikrini Tek Tıkla 2026 Mimari Planına ve Prompt'a Dönüştür</p>
   </header>
 
-  <div id="feed" class="feed">
-    <div class="loader">Veriler çekiliyor...</div>
+  <div class="input-section">
+    <label for="ideaInput">Uygulama Fikrin Nedir?</label>
+    <div class="input-group">
+      <input type="text" id="ideaInput" placeholder="Örn: Yapay zekâ destekli kişisel bütçe ve harcama asistanı...">
+      <button class="btn-generate" onclick="generateArchitecture()">Planı Üret</button>
+    </div>
+    
+    <div class="quick-tags">
+      <span class="chip" onclick="setIdea('AI destekli PDF özetleme ve soru-cevap uygulaması')">📄 PDF AI Chat</span>
+      <span class="chip" onclick="setIdea('Mobil uyumlu mikro-SaaS abonelik ve fatura takipçisi')">💳 Fatura SaaS</span>
+      <span class="chip" onclick="setIdea('Açık kaynak geliştirici topluluğu için canlı kod inceleme platformu')">💻 Code Review</span>
+    </div>
+  </div>
+
+  <div id="loader" class="loader">🧠 YZ Algoritmaları Mimarini Hesaplıyor...</div>
+
+  <div id="outputGrid" class="output-grid">
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-title">🛠️ Teknoloji Yığını (Tech Stack)</div>
+      <div class="card-body" id="techStack"></div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-title">🤖 YZ & Veritabanı Altyapısı</div>
+      <div class="card-body" id="aiAndDb"></div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-title">📊 Zaman Tahmini & Zorluk</div>
+      <div class="card-body" id="estimates"></div>
+    </div>
+
+    <!-- Card 4: Cursor / VS Code Prompt -->
+    <div class="prompt-box">
+      <button class="btn-copy" onclick="copyPrompt()">📋 Prompt'u Kopyala</button>
+      <div class="card-title" style="color: var(--green);">🤖 Cursor / VS Code Kodlama Promptu</div>
+      <pre id="generatedPrompt"></pre>
+    </div>
   </div>
 </div>
 
 <script>
-  const HN_ITEM_URL = (id) => `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
-
-  function generateAISummary(title, score, commentCount) {
-    const lowerTitle = title.toLowerCase();
-    if (lowerTitle.includes('ai') || lowerTitle.includes('llm') || lowerTitle.includes('gpt') || lowerTitle.includes('claude')) {
-      return `🤖 **AI & Model:** Yapay zekâ teknolojileri ve büyük dil modelleri ile ilgili içerik.`;
-    } else if (lowerTitle.includes('show hn')) {
-      return `🚀 **Show HN:** Bir geliştiricinin toplulukla paylaştığı canlı projesi.`;
-    } else if (score > 150) {
-      return `🔥 **Yüksek Etkileşim:** Toplulukta popüler bir konu (${score} puan, ${commentCount} yorum).`;
-    } else {
-      return `⚡ **Son Dakika:** Hacker News akışına henüz düşen geliştirici içeriği.`;
-    }
+  function setIdea(text) {
+    document.getElementById('ideaInput').value = text;
+    generateArchitecture();
   }
 
-  async function fetchHNDigest() {
-    const feedElement = document.getElementById('feed');
-    const feedType = document.getElementById('feedType').value;
-    
-    feedElement.innerHTML = '<div class="loader">Günün güncel verileri yükleniyor...</div>';
+  function generateArchitecture() {
+    const input = document.getElementById('ideaInput').value.trim();
+    if (!input) return alert('Lütfen bir uygulama fikri yazın!');
 
-    try {
-      // Seçilen akış türüne göre URL oluştur (newstories, topstories, beststories vb.)
-      const response = await fetch(`https://hacker-news.firebaseio.com/v0/${feedType}.json`);
-      const storyIds = await response.json();
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('outputGrid').style.display = 'none';
 
-      // En güncel ilk 8 taneyi al
-      const topIds = storyIds.slice(0, 8);
-      
-      feedElement.innerHTML = '';
+    setTimeout(() => {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('outputGrid').style.display = 'grid';
 
-      const storyPromises = topIds.map(id => fetch(HN_ITEM_URL(id)).then(res => res.json()));
-      const stories = await Promise.all(storyPromises);
+      const lower = input.toLowerCase();
 
-      stories.forEach(story => {
-        if (!story || !story.title) return;
+      // Akıllı Analiz Mantığı
+      let isAI = lower.includes('ai') || lower.includes('pdf') || lower.includes('chat') || lower.includes('yapay');
+      let isSaaS = lower.includes('saas') || lower.includes('abonelik') || lower.includes('fatura') || lower.includes('para');
 
-        const card = document.createElement('div');
-        card.className = 'card';
-        const commentCount = story.kids ? story.kids.length : 0;
-        const aiSummary = generateAISummary(story.title, story.score || 0, commentCount);
+      // 1. Tech Stack
+      document.getElementById('techStack').innerHTML = `
+        <span class="badge-item"><strong>Frontend:</strong> Next.js 15 (React 19) + Tailwind CSS</span>
+        <span class="badge-item"><strong>Backend:</strong> Node.js / Serverless API Functions</span>
+        <span class="badge-item"><strong>Auth:</strong> Clerk / NextAuth.js</span>
+        <span class="badge-item"><strong>Deploy:</strong> Vercel + Cloudflare</span>
+      `;
 
-        card.innerHTML = `
-          <a class="title-link" href="${story.url || `https://news.ycombinator.com/item?id=${story.id}`}" target="_blank">
-            ${story.title}
-          </a>
-          <div class="meta">
-            <span>▲ ${story.score || 0} puan</span>
-            <span>💬 ${commentCount} yorum</span>
-            <span>👤 ${story.by || 'anonim'}</span>
-          </div>
-          <div class="ai-summary">
-            ${aiSummary}
-          </div>
-        `;
+      // 2. YZ & DB
+      document.getElementById('aiAndDb').innerHTML = `
+        <span class="badge-item"><strong>AI Model:</strong> ${isAI ? 'Claude 3.5 Sonnet / OpenAI GPT-4o' : 'Kural Tabanlı Algoritma'}</span>
+        <span class="badge-item"><strong>Database:</strong> PostgreSQL (Supabase / Neon)</span>
+        <span class="badge-item"><strong>Vector DB:</strong> ${isAI ? 'Pinecone / Qdrant (RAG Entegrasyonu)' : 'Gerekli Değil'}</span>
+      `;
 
-        feedElement.appendChild(card);
-      });
+      // 3. Zaman & Zorluk
+      document.getElementById('estimates').innerHTML = `
+        <span class="badge-item"><strong>Geliştirme Süresi:</strong> 3-5 Gün (MVP)</span>
+        <span class="badge-item"><strong>Zorluk Seviyesi:</strong> ${isAI ? 'Orta-İleri (AI Entegrasyonu)' : 'Temel-Orta'}</span>
+        <span class="badge-item"><strong>Pazar Potansiyeli:</strong> 🔥 %88 Yüksek</span>
+      `;
 
-    } catch (error) {
-      feedElement.innerHTML = `<div class="loader" style="color: #ff5555;">Haberler yüklenirken bir sorun oluştu.</div>`;
-      console.error(error);
-    }
+      // 4. Otomatik Kodlama Promptu
+      const promptText = `SYSTEM PROMPT (Cursor / Copilot / VS Code):
+
+Sen kıdemli bir Full-Stack yazılım mimarısın. 
+Bana aşağıdaki proje fikri için çalışan tam bir MVP kod altyapısı oluştur:
+
+PROJE FİKRİ: "${input}"
+
+TEKNİK GEREKSİNİMLER:
+- Frontend: Next.js (App Router), Tailwind CSS
+- Database & Auth: Supabase (PostgreSQL)
+${isAI ? '- AI Integration: OpenAI / Anthropic SDK (Streaming yanıtlar ile)' : ''}
+
+LÜTFEN ŞUNLARI SAĞLA:
+1. Temiz dizin yapısı (Folder Structure)
+2. Gerekli .env dosyası değişkenleri
+3. Ana sayfa kurgusu ve UI bileşenleri
+4. Veritabanı şeması (SQL sorgusu)`;
+
+      document.getElementById('generatedPrompt').innerText = promptText;
+
+    }, 600);
   }
 
-  // İlk açılışta çalıştır
-  fetchHNDigest();
-
-  // Her 60 saniyede bir otomatik veriyi tazele
-  setInterval(fetchHNDigest, 60000);
+  function copyPrompt() {
+    const text = document.getElementById('generatedPrompt').innerText;
+    navigator.clipboard.writeText(text);
+    alert('YZ Promptu panoya kopyalandı! Doğrudan VS Code veya Cursor YZ asistanına yapıştırabilirsin.');
+  }
 </script>
 </body>
 </html>
